@@ -1,64 +1,61 @@
-'use client';
+"use client";
+import { useArrayManager } from "@/hooks/useArrayManager";
+import { SortableItem, useDragAndDrop } from "@/hooks/useDragAndDrop";
+import { useKeyboardShortcuts } from "@/hooks/useKeyboardShortcuts";
+import { useCVStore } from "@/store/useCVStore";
+import { CV } from "@/types/cv";
+import { useCallback } from "react";
+import { TemplateRegistry } from "./templates/registry";
+import { DndContext, closestCenter } from "@dnd-kit/core";
+import {
+  SortableContext,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
+import { Link, ArrowLeft, Undo, Redo } from "lucide-react";
+import { AutoSaveIndicator } from "./AutoSaveIndicator";
+import { DownloadButton } from "./DownloadButton";
+import { MobileEditorTabs } from "./MobileEditorTabs";
+import { SectionManager } from "./SectionManager";
+import { SkillsInput } from "./SkillsInput";
+import { TemplateSelector } from "./TemplateSelector";
+import { TextareaWithCounter } from "./TextareaWithCounter";
+import { Button } from "./ui/button";
+import { Input } from "./ui/input";
 
-import { useCVStore } from '@/store/useCVStore';
-import { useParams, useRouter } from 'next/navigation';
-import { useEffect, useCallback } from 'react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { ArrowLeft, Undo, Redo } from 'lucide-react';
-import { AutoSaveIndicator } from '@/components/AutoSaveIndicator';
-import { DownloadButton } from '@/components/DownloadButton';
-import { TemplateSelector } from '@/components/TemplateSelector';
-import { SkillsInput } from '@/components/SkillsInput';
-import { TextareaWithCounter } from '@/components/TextareaWithCounter';
-import { SectionManager } from '@/components/SectionManager';
-import { MobileEditorTabs } from '@/components/MobileEditorTabs';
-import { TemplateRegistry } from '@/components/templates/registry';
-import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts';
-import { useArrayManager } from '@/hooks/useArrayManager';
-import { DndContext, closestCenter } from '@dnd-kit/core';
-import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
-import { SortableItem, useDragAndDrop } from '@/hooks/useDragAndDrop';
-import Link from 'next/link';
-import { CV } from '@/types/cv';
+interface CvProps {
+  cv: CV;
+}
 
-export default function EditorPage() {
-  
-  const param = useParams();
-  const id = param.id as string;
+export function EditorComponent({ cv }: CvProps) {
+  const { updateCV, undo, redo, canUndo, canRedo } = useCVStore();
 
-  const router = useRouter();
-  const { cvs, updateCV, undo, redo, canUndo, canRedo } = useCVStore();
-
-  const cv = cvs.find((c) => c.id === id);
-  
   // Default values for hooks when cv is undefined
-  const experience = cv?.experience ?? [];
-  const education = cv?.education ?? [];
+  const experience = cv.experience.length === 0 ? [] : cv.experience;
+  const education = cv.education.length === 0 ? [] : cv.education;
+  const id = cv.id;
 
-  const handleUpdate = useCallback((data: Partial<CV>) => {
-    updateCV(id, data);
-  }, [id, updateCV]);
+  const handleUpdate = useCallback(
+    (data: Partial<CV>) => {
+      updateCV(id, data);
+    },
+    [id, updateCV]
+  );
 
   // Experience array manager - called unconditionally
   const experienceManager = useArrayManager(experience, (newExp) =>
     handleUpdate({ experience: newExp })
   );
 
-  const { sensors: expSensors, handleDragEnd: handleExpDragEnd } = useDragAndDrop(
-    experience,
-    experienceManager.reorder
-  );
+  const { sensors: expSensors, handleDragEnd: handleExpDragEnd } =
+    useDragAndDrop(experience, experienceManager.reorder);
 
   // Education array manager - called unconditionally
   const educationManager = useArrayManager(education, (newEdu) =>
     handleUpdate({ education: newEdu })
   );
 
-  const { sensors: eduSensors, handleDragEnd: handleEduDragEnd } = useDragAndDrop(
-    education,
-    educationManager.reorder
-  );
+  const { sensors: eduSensors, handleDragEnd: handleEduDragEnd } =
+    useDragAndDrop(education, educationManager.reorder);
 
   // Keyboard shortcuts - called unconditionally
   useKeyboardShortcuts({
@@ -67,17 +64,6 @@ export default function EditorPage() {
     onSave: () => {},
     onPrint: () => window.print(),
   });
-
-  useEffect(() => {
-    if (!cv) {
-      router.push('/');
-    }
-  }, [cv, router]);
-
-  // Early return AFTER all hooks
-  if (!cv) {
-    return null;
-  }
 
   const PreviewComponent = TemplateRegistry[cv.templateId].preview;
 
@@ -162,11 +148,11 @@ export default function EditorPage() {
             size="sm"
             onClick={() =>
               experienceManager.add({
-                company: '',
-                role: '',
-                dateRange: '',
-                location: '',
-                description: '',
+                company: "",
+                role: "",
+                dateRange: "",
+                location: "",
+                description: "",
               })
             }
           >
@@ -189,7 +175,9 @@ export default function EditorPage() {
                     placeholder="Company"
                     value={exp.company}
                     onChange={(e) =>
-                      experienceManager.update(exp.id, { company: e.target.value })
+                      experienceManager.update(exp.id, {
+                        company: e.target.value,
+                      })
                     }
                   />
                   <Input
@@ -203,21 +191,27 @@ export default function EditorPage() {
                     placeholder="Date Range (e.g., 2020 - Present)"
                     value={exp.dateRange}
                     onChange={(e) =>
-                      experienceManager.update(exp.id, { dateRange: e.target.value })
+                      experienceManager.update(exp.id, {
+                        dateRange: e.target.value,
+                      })
                     }
                   />
                   <Input
                     placeholder="Location"
                     value={exp.location}
                     onChange={(e) =>
-                      experienceManager.update(exp.id, { location: e.target.value })
+                      experienceManager.update(exp.id, {
+                        location: e.target.value,
+                      })
                     }
                   />
                   <TextareaWithCounter
                     placeholder="Description"
                     value={exp.description}
                     onChange={(e) =>
-                      experienceManager.update(exp.id, { description: e.target.value })
+                      experienceManager.update(exp.id, {
+                        description: e.target.value,
+                      })
                     }
                     maxLength={500}
                   />
@@ -243,9 +237,9 @@ export default function EditorPage() {
             size="sm"
             onClick={() =>
               educationManager.add({
-                institution: '',
-                degree: '',
-                dateRange: '',
+                institution: "",
+                degree: "",
+                dateRange: "",
               })
             }
           >
@@ -268,21 +262,27 @@ export default function EditorPage() {
                     placeholder="Institution"
                     value={edu.institution}
                     onChange={(e) =>
-                      educationManager.update(edu.id, { institution: e.target.value })
+                      educationManager.update(edu.id, {
+                        institution: e.target.value,
+                      })
                     }
                   />
                   <Input
                     placeholder="Degree"
                     value={edu.degree}
                     onChange={(e) =>
-                      educationManager.update(edu.id, { degree: e.target.value })
+                      educationManager.update(edu.id, {
+                        degree: e.target.value,
+                      })
                     }
                   />
                   <Input
                     placeholder="Date Range (e.g., 2016 - 2020)"
                     value={edu.dateRange}
                     onChange={(e) =>
-                      educationManager.update(edu.id, { dateRange: e.target.value })
+                      educationManager.update(edu.id, {
+                        dateRange: e.target.value,
+                      })
                     }
                   />
                   <Button

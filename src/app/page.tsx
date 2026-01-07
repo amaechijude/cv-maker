@@ -168,7 +168,7 @@ export default function Dashboard() {
                 </p>
 
                 <div className="flex flex-wrap gap-2">
-                  <Link href={`/editor/${cv.id}`}>
+                  <Link href={`/editor?id=${cv.id}`}>
                     <Button size="sm" variant="default">
                       <Edit className="w-4 h-4 mr-1" />
                       Edit

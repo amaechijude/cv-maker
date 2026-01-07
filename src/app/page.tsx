@@ -97,15 +97,15 @@ export default function Dashboard() {
               </p>
             </div>
             <div className="flex gap-2">
-              <Button variant="outline" onClick={handleImport}>
+              <Button variant="outline" onClick={handleImport} className="cursor-pointer">
                 <FileUp className="w-4 h-4 mr-2" />
                 Import
               </Button>
-              <Button variant="outline" onClick={exportJSON}>
+              <Button variant="outline" onClick={exportJSON} className="cursor-pointer">
                 <FileDown className="w-4 h-4 mr-2" />
                 Export All
               </Button>
-              <Button onClick={handleCreateCV}>
+              <Button onClick={handleCreateCV} className="cursor-pointer">
                 <Plus className="w-4 h-4 mr-2" />
                 New CV
               </Button>
@@ -144,7 +144,7 @@ export default function Dashboard() {
                 : "Create your first professional CV in minutes"}
             </p>
             {!searchQuery && (
-              <Button onClick={handleCreateCV} size="lg">
+              <Button onClick={handleCreateCV} size="lg" className="cursor-pointer">
                 <Plus className="w-5 h-5 mr-2" />
                 Create New CV
               </Button>
@@ -169,8 +169,8 @@ export default function Dashboard() {
 
                 <div className="flex flex-wrap gap-2">
                   <Link href={`/editor?id=${cv.id}`}>
-                    <Button size="sm" variant="default">
-                      <Edit className="w-4 h-4 mr-1" />
+                    <Button size="sm" variant="default" className="cursor-pointer">
+                      <Edit className="w-4 h-4 mr-1 cursor-pointer" />
                       Edit
                     </Button>
                   </Link>
@@ -178,16 +178,18 @@ export default function Dashboard() {
                     size="sm"
                     variant="outline"
                     onClick={() => handleDuplicate(cv.id)}
+                    className="cursor-pointer"
                   >
-                    <Copy className="w-4 h-4 mr-1" />
+                    <Copy className="w-4 h-4 mr-1 cursor-pointer" />
                     Duplicate
                   </Button>
                   <Button
                     size="sm"
                     variant="outline"
                     onClick={() => exportSingleCV(cv.id)}
+                    className="cursor-pointer"
                   >
-                    <Download className="w-4 h-4 mr-1" />
+                    <Download className="w-4 h-4 mr-1 cursor-pointer" />
                     Export
                   </Button>
                   <Button
@@ -195,7 +197,7 @@ export default function Dashboard() {
                     variant="outline"
                     onClick={() => setDeleteCV(cv)}
                   >
-                    <Trash2 className="w-4 h-4 mr-1" />
+                    <Trash2 className="w-4 h-4 mr-1 cursor-pointer" />
                     Delete
                   </Button>
                 </div>

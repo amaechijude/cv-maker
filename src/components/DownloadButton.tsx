@@ -44,7 +44,7 @@ export const DownloadButton = ({
     <Button 
       onClick={handleDownload} 
       disabled={disabled || isGenerating}
-      className="gap-2"
+      className="gap-2 cursor-pointer"
       size="default"
     >
       {isGenerating ? (

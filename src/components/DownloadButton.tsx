@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { pdf } from '@react-pdf/renderer';
-import { saveAs } from 'file-saver';
+// import { saveAs } from 'file-saver';
 import { CV } from '@/types/cv';
 import { TemplateRegistry } from '@/components/templates/registry';
 import { Button } from '@/components/ui/button';
@@ -20,20 +20,51 @@ export const DownloadButton = ({
 
   const handleDownload = async () => {
     setIsGenerating(true);
+    console.log('Starting PDF download process...');
+    console.log('CV Data:', {
+        id: data.id,
+        templateId: data.templateId,
+        sections: data.sectionOrder
+    });
     
     try {
-      const PDFComponent = TemplateRegistry[data.templateId].pdf;
+      if (!data.templateId) {
+          throw new Error('Template ID is missing');
+      }
+
+      console.log('Looking up template:', data.templateId);
+      const templateConfig = TemplateRegistry[data.templateId];
+      
+      if (!templateConfig) {
+          console.error('Template registry entry not found for:', data.templateId);
+          console.log('Available templates:', Object.keys(TemplateRegistry));
+          throw new Error(`Template not found: ${data.templateId}`);
+      }
+
+      const PDFComponent = templateConfig.pdf;
+      if (!PDFComponent) {
+          throw new Error(`PDF Component missing for template: ${data.templateId}`);
+      }
+      
+      console.log('Generating PDF blob...');
       const blob = await pdf(<PDFComponent data={data} />).toBlob();
-      const filename = `${data.personalInfo.fullName.replace(/\s+/g, '_')}_CV.pdf`;
-      saveAs(blob, filename);
+      console.log('Blob generated, size:', blob.size);
+      
+      const safeName = data.personalInfo.fullName 
+          ? data.personalInfo.fullName.replace(/\s+/g, '_') 
+          : 'CV';
+      const filename = `${safeName}_CV.pdf`;
+      
+      console.log('Saving file as:', filename);
+      // saveAs(blob, filename);
       
       toast.success('PDF Downloaded', {
         description: `${filename} has been saved to your device.`,
       });
     } catch (err) {
-      console.error('PDF Generation failed:', err);
+      console.error('PDF Generation failed detailed error:', err);
       toast.error('Generation Failed', {
-        description: 'Failed to generate PDF. Please try again.',
+        description: err instanceof Error ? err.message : 'Failed to generate PDF. Please try again.',
       });
     } finally {
       setIsGenerating(false);

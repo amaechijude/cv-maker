@@ -2,10 +2,19 @@
 
 import { Suspense } from "react";
 import { useCVStore } from "@/store/useCVStore";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useSearchParams, useRouter, redirect } from "next/navigation";
 import { EditorComponent } from "@/components/Editor";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
+
+
+export default function GetCv() {
+  return (
+    <Suspense fallback={<div className="flex items-center justify-center min-h-screen">Loading...</div>}>
+      <EditorContent />
+    </Suspense>
+  );
+}
 
 function EditorContent() {
   const searchParams = useSearchParams();
@@ -14,14 +23,14 @@ function EditorContent() {
   
   const { cvs } = useCVStore();
   if (!id) {
-    router.push("/");
+    redirect("/");
     return null;
   }
 
   const cv = cvs.find((c) => c.id === id);
 
   if (!cv) {
-    router.push("/");
+    redirect("/");
     return null;
   }
 
@@ -35,10 +44,3 @@ function EditorContent() {
   </>;
 }
 
-export default function GetCv() {
-  return (
-    <Suspense fallback={<div className="flex items-center justify-center min-h-screen">Loading...</div>}>
-      <EditorContent />
-    </Suspense>
-  );
-}

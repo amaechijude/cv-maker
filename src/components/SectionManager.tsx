@@ -18,7 +18,9 @@ export const SectionManager = ({
   const sectionLabels = {
     experience: 'Work Experience',
     education: 'Education',
-    skills: 'Skills'
+    skills: 'Skills',
+    projects: 'Projects',
+    certifications: 'Certifications'
   };
 
   const handleDragEnd = (event: DragEndEvent) => {

@@ -55,6 +55,46 @@ export const MinimalTemplate = ({ data }: { data: CV }) => {
             </div>
           );
         }
+        if (section === 'projects' && data.projects && data.projects.length > 0) {
+          return (
+            <div key="projects" className="mb-6">
+              <h2 className="text-sm font-bold uppercase mb-3">Projects</h2>
+              {data.projects.sort((a, b) => a.order - b.order).map((project) => (
+                <div key={project.id} className="mb-4">
+                  <h3 className="text-sm font-semibold">{project.name}</h3>
+                  <p className="text-xs text-gray-600 mb-1">{project.dateRange}</p>
+                   {project.link && (
+                       <a href={project.link} target="_blank" rel="noopener noreferrer" className="text-xs text-blue-600 block mb-1 hover:underline">
+                         {project.link}
+                       </a>
+                    )}
+                  <p className="text-sm leading-relaxed">{project.description}</p>
+                </div>
+              ))}
+            </div>
+          );
+        }
+        if (section === 'certifications' && data.certifications && data.certifications.length > 0) {
+          return (
+            <div key="certifications" className="mb-6">
+              <h2 className="text-sm font-bold uppercase mb-3">Certifications</h2>
+              {data.certifications.sort((a, b) => a.order - b.order).map((cert) => (
+                <div key={cert.id} className="mb-3">
+                  <div className="flex justify-between items-baseline">
+                    <h3 className="text-sm font-semibold">{cert.name}</h3>
+                    <span className="text-xs text-gray-600">{cert.date}</span>
+                  </div>
+                  <p className="text-sm">{cert.issuer}</p>
+                  {cert.link && (
+                       <a href={cert.link} target="_blank" rel="noopener noreferrer" className="text-xs text-blue-600 block hover:underline">
+                         {cert.link}
+                       </a>
+                    )}
+                </div>
+              ))}
+            </div>
+          );
+        }
         return null;
       })}
     </div>

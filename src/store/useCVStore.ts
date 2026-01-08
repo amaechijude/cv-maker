@@ -80,7 +80,22 @@ export const useCVStore = create<CVState>()(
             order: 0
           }],
           skills: ['JavaScript', 'React', 'Node.js', 'TypeScript', 'Git'],
-          sectionOrder: ['experience', 'education', 'skills'],
+          projects: [{
+            id: uuidv4(),
+            name: 'Project Alpha',
+            description: 'A cutting-edge web application built with Next.js and Tailwind CSS.',
+            dateRange: '2023',
+            link: 'https://github.com/johndoe/project-alpha',
+            order: 0
+          }],
+          certifications: [{
+            id: uuidv4(),
+            name: 'AWS Certified Solutions Architect',
+            issuer: 'Amazon Web Services',
+            date: '2022',
+            order: 0
+          }],
+          sectionOrder: ['experience', 'education', 'skills', 'projects', 'certifications'],
           hiddenSections: []
         };
         return { 
@@ -99,7 +114,9 @@ export const useCVStore = create<CVState>()(
           title: `${original.title} (Copy)`,
           lastModified: Date.now(),
           experience: original.experience.map(exp => ({ ...exp, id: uuidv4() })),
-          education: original.education.map(edu => ({ ...edu, id: uuidv4() }))
+          education: original.education.map(edu => ({ ...edu, id: uuidv4() })),
+          projects: original.projects.map(proj => ({ ...proj, id: uuidv4() })),
+          certifications: original.certifications.map(cert => ({ ...cert, id: uuidv4() }))
         };
         return { cvs: [duplicate, ...state.cvs] };
       }),

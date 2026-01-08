@@ -74,6 +74,42 @@ export const MinimalPDF = ({ data }: { data: CV }) => {
               </View>
             );
           }
+          if (section === 'projects' && data.projects && data.projects.length > 0) {
+            return (
+              <View key="projects">
+                <Text style={styles.sectionTitle}>Projects</Text>
+                {data.projects.sort((a, b) => a.order - b.order).map((project) => (
+                  <View key={project.id} style={styles.experienceItem}>
+                    <Text style={styles.companyRole}>{project.name}</Text>
+                    <Text style={styles.dateLocation}>{project.dateRange}</Text>
+                    {project.link && (
+                        <Text style={styles.dateLocation}>{project.link}</Text>
+                      )}
+                    <Text style={styles.description}>{project.description}</Text>
+                  </View>
+                ))}
+              </View>
+            );
+          }
+          if (section === 'certifications' && data.certifications && data.certifications.length > 0) {
+            return (
+              <View key="certifications">
+                <Text style={styles.sectionTitle}>Certifications</Text>
+                {data.certifications.sort((a, b) => a.order - b.order).map((cert) => (
+                  <View key={cert.id} style={styles.educationItem}>
+                    <View style={styles.row}>
+                      <Text style={styles.companyRole}>{cert.name}</Text>
+                      <Text style={styles.dateLocation}>{cert.date}</Text>
+                    </View>
+                    <Text style={styles.description}>{cert.issuer}</Text>
+                    {cert.link && (
+                        <Text style={styles.dateLocation}>{cert.link}</Text>
+                      )}
+                  </View>
+                ))}
+              </View>
+            );
+          }
           return null;
         })}
       </Page>

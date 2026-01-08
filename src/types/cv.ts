@@ -18,9 +18,11 @@ export interface CV {
   experience: WorkExperience[];
   education: Education[];
   skills: string[];
+  projects: Project[];
+  certifications: Certification[];
 
   // Section visibility and ordering
-  sectionOrder: ("experience" | "education" | "skills")[];
+  sectionOrder: ("experience" | "education" | "skills" | "projects" | "certifications")[];
   hiddenSections: string[];
 }
 
@@ -42,6 +44,24 @@ export interface Education {
   order: number;
 }
 
+export interface Project {
+  id: string;
+  name: string;
+  description: string;
+  link?: string;
+  dateRange: string;
+  order: number;
+}
+
+export interface Certification {
+  id: string;
+  name: string;
+  issuer: string;
+  date: string;
+  link?: string;
+  order: number;
+}
+
 // Schema migration helper
 export const CURRENT_SCHEMA_VERSION = 1;
 
@@ -56,8 +76,10 @@ export const migrateCV = (cv: LegacyCV): CV => {
     return {
       ...cv,
       version: 1,
-      sectionOrder: cv.sectionOrder || ["experience", "education", "skills"],
+      sectionOrder: cv.sectionOrder || ["experience", "education", "skills", "projects", "certifications"],
       hiddenSections: cv.hiddenSections || [],
+      projects: cv.projects || [],
+      certifications: cv.certifications || [],
     } as CV;
   }
 

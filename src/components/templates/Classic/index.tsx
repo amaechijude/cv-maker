@@ -94,6 +94,62 @@ export const ClassicTemplate = ({ data }: { data: CV }) => {
           );
         }
 
+        if (section === 'projects' && data.projects && data.projects.length > 0) {
+          return (
+            <div key="projects" className="mb-6">
+              <h2 className="text-lg font-bold uppercase border-b-2 border-black mb-4 text-black">
+                Projects
+              </h2>
+              {data.projects
+                .sort((a, b) => a.order - b.order)
+                .map((project) => (
+                  <div key={project.id} className="mb-4">
+                    <div className="flex justify-between items-baseline mb-1 text-black">
+                      <h3 className="text-base font-bold">
+                        {project.name}
+                      </h3>
+                      <span className="text-sm">
+                         {project.dateRange}
+                      </span>
+                    </div>
+                    {project.link && (
+                       <a href={project.link} target="_blank" rel="noopener noreferrer" className="text-sm text-blue-600 block mb-1 hover:underline">
+                         {project.link}
+                       </a>
+                    )}
+                    <p className="text-sm leading-relaxed">{project.description}</p>
+                  </div>
+                ))}
+            </div>
+          );
+        }
+
+        if (section === 'certifications' && data.certifications && data.certifications.length > 0) {
+          return (
+            <div key="certifications" className="mb-6">
+              <h2 className="text-lg font-bold uppercase border-b-2 border-black mb-4 text-black">
+                Certifications
+              </h2>
+              {data.certifications
+                .sort((a, b) => a.order - b.order)
+                .map((cert) => (
+                  <div key={cert.id} className="mb-3">
+                    <div className="flex justify-between items-baseline text-black">
+                      <h3 className="text-base font-bold">{cert.name}</h3>
+                      <span className="text-sm text-black">{cert.date}</span>
+                    </div>
+                    <p className="text-sm italic text-black">{cert.issuer}</p>
+                     {cert.link && (
+                       <a href={cert.link} target="_blank" rel="noopener noreferrer" className="text-sm text-blue-600 block hover:underline">
+                         {cert.link}
+                       </a>
+                    )}
+                  </div>
+                ))}
+            </div>
+          );
+        }
+
         return null;
       })}
     </div>

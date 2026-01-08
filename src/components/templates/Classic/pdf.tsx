@@ -170,6 +170,50 @@ export const ClassicPDF = ({ data }: { data: CV }) => {
             );
           }
 
+          if (section === 'projects' && data.projects && data.projects.length > 0) {
+            return (
+              <View key="projects">
+                <Text style={styles.sectionTitle}>Projects</Text>
+                {data.projects
+                  .sort((a, b) => a.order - b.order)
+                  .map((project) => (
+                    <View key={project.id} style={styles.experienceItem}>
+                      <View style={styles.row}>
+                        <Text style={styles.company}>{project.name}</Text>
+                        <Text style={styles.date}>{project.dateRange}</Text>
+                      </View>
+                       {project.link && (
+                        <Text style={styles.roleLocation}>{project.link}</Text>
+                      )}
+                      <Text style={styles.description}>{project.description}</Text>
+                    </View>
+                  ))}
+              </View>
+            );
+          }
+
+          if (section === 'certifications' && data.certifications && data.certifications.length > 0) {
+            return (
+              <View key="certifications">
+                <Text style={styles.sectionTitle}>Certifications</Text>
+                {data.certifications
+                  .sort((a, b) => a.order - b.order)
+                  .map((cert) => (
+                    <View key={cert.id} style={styles.educationItem}>
+                      <View style={styles.row}>
+                        <Text style={styles.institution}>{cert.name}</Text>
+                        <Text style={styles.date}>{cert.date}</Text>
+                      </View>
+                      <Text style={styles.degree}>{cert.issuer}</Text>
+                       {cert.link && (
+                        <Text style={styles.degree}>{cert.link}</Text>
+                      )}
+                    </View>
+                  ))}
+              </View>
+            );
+          }
+
           return null;
         })}
       </Page>

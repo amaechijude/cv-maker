@@ -32,6 +32,8 @@ export function EditorComponent({ cv }: CvProps) {
   // Default values for hooks when cv is undefined
   const experience = cv.experience.length === 0 ? [] : cv.experience;
   const education = cv.education.length === 0 ? [] : cv.education;
+  const projects = cv.projects || [];
+  const certifications = cv.certifications || [];
   const id = cv.id;
 
   const handleUpdate = useCallback(
@@ -56,6 +58,22 @@ export function EditorComponent({ cv }: CvProps) {
 
   const { sensors: eduSensors, handleDragEnd: handleEduDragEnd } =
     useDragAndDrop(education, educationManager.reorder);
+
+  // Projects array manager
+  const projectsManager = useArrayManager(projects, (newProjects) =>
+    handleUpdate({ projects: newProjects })
+  );
+
+  const { sensors: projSensors, handleDragEnd: handleProjDragEnd } =
+    useDragAndDrop(projects, projectsManager.reorder);
+
+  // Certifications array manager
+  const certificationsManager = useArrayManager(certifications, (newCerts) =>
+    handleUpdate({ certifications: newCerts })
+  );
+
+  const { sensors: certSensors, handleDragEnd: handleCertDragEnd } =
+    useDragAndDrop(certifications, certificationsManager.reorder);
 
   // Keyboard shortcuts - called unconditionally
   useKeyboardShortcuts({
@@ -289,6 +307,167 @@ export function EditorComponent({ cv }: CvProps) {
                     size="sm"
                     variant="destructive"
                     onClick={() => educationManager.remove(edu.id)}
+                  >
+                    Delete
+                  </Button>
+                </div>
+              </SortableItem>
+            ))}
+          </SortableContext>
+        </DndContext>
+      </div>
+
+      {/* Projects */}
+      <div className="space-y-4">
+        <div className="flex justify-between items-center">
+          <h2 className="text-lg font-bold">Projects</h2>
+          <Button
+            size="sm"
+            onClick={() =>
+              projectsManager.add({
+                name: "",
+                description: "",
+                dateRange: "",
+                link: "",
+              })
+            }
+          >
+            Add Project
+          </Button>
+        </div>
+        <DndContext
+          sensors={projSensors}
+          collisionDetection={closestCenter}
+          onDragEnd={handleProjDragEnd}
+        >
+          <SortableContext
+            items={projects.map((p) => p.id)}
+            strategy={verticalListSortingStrategy}
+          >
+            {projects.map((project) => (
+              <SortableItem key={project.id} id={project.id}>
+                <div className="border rounded-lg p-4 space-y-2">
+                  <Input
+                    placeholder="Project Name"
+                    value={project.name}
+                    onChange={(e) =>
+                      projectsManager.update(project.id, {
+                        name: e.target.value,
+                      })
+                    }
+                  />
+                  <Input
+                    placeholder="Date Range"
+                    value={project.dateRange}
+                    onChange={(e) =>
+                      projectsManager.update(project.id, {
+                        dateRange: e.target.value,
+                      })
+                    }
+                  />
+                  <Input
+                    placeholder="Link (optional)"
+                    value={project.link}
+                    onChange={(e) =>
+                      projectsManager.update(project.id, {
+                        link: e.target.value,
+                      })
+                    }
+                  />
+                  <TextareaWithCounter
+                    placeholder="Description"
+                    value={project.description}
+                    onChange={(e) =>
+                      projectsManager.update(project.id, {
+                        description: e.target.value,
+                      })
+                    }
+                    maxLength={500}
+                  />
+                  <Button
+                    size="sm"
+                    variant="destructive"
+                    onClick={() => projectsManager.remove(project.id)}
+                  >
+                    Delete
+                  </Button>
+                </div>
+              </SortableItem>
+            ))}
+          </SortableContext>
+        </DndContext>
+      </div>
+
+      {/* Certifications */}
+      <div className="space-y-4">
+        <div className="flex justify-between items-center">
+          <h2 className="text-lg font-bold">Certifications</h2>
+          <Button
+            size="sm"
+            onClick={() =>
+              certificationsManager.add({
+                name: "",
+                issuer: "",
+                date: "",
+                link: "",
+              })
+            }
+          >
+            Add Certification
+          </Button>
+        </div>
+        <DndContext
+          sensors={certSensors}
+          collisionDetection={closestCenter}
+          onDragEnd={handleCertDragEnd}
+        >
+          <SortableContext
+            items={certifications.map((c) => c.id)}
+            strategy={verticalListSortingStrategy}
+          >
+            {certifications.map((cert) => (
+              <SortableItem key={cert.id} id={cert.id}>
+                <div className="border rounded-lg p-4 space-y-2">
+                  <Input
+                    placeholder="Certification Name"
+                    value={cert.name}
+                    onChange={(e) =>
+                      certificationsManager.update(cert.id, {
+                        name: e.target.value,
+                      })
+                    }
+                  />
+                  <Input
+                    placeholder="Issuer"
+                    value={cert.issuer}
+                    onChange={(e) =>
+                      certificationsManager.update(cert.id, {
+                        issuer: e.target.value,
+                      })
+                    }
+                  />
+                  <Input
+                    placeholder="Date"
+                    value={cert.date}
+                    onChange={(e) =>
+                      certificationsManager.update(cert.id, {
+                        date: e.target.value,
+                      })
+                    }
+                  />
+                  <Input
+                    placeholder="Link (optional)"
+                    value={cert.link}
+                    onChange={(e) =>
+                      certificationsManager.update(cert.id, {
+                        link: e.target.value,
+                      })
+                    }
+                  />
+                  <Button
+                    size="sm"
+                    variant="destructive"
+                    onClick={() => certificationsManager.remove(cert.id)}
                   >
                     Delete
                   </Button>

@@ -6,38 +6,40 @@ import { CV } from '@/types/cv';
 
 const styles = StyleSheet.create({
   page: { 
-    padding: 40, 
-    fontFamily: 'Helvetica',
+    padding: 30, 
+    fontFamily: 'Times-Roman',
     fontSize: 10,
-    lineHeight: 1.5
+    lineHeight: 1.4
   },
   header: { 
     fontSize: 24, 
-    marginBottom: 5, 
+    marginBottom: 8, 
     fontWeight: 'bold',
-    textTransform: 'uppercase',
-    letterSpacing: 1
+    textAlign: 'center',
+    color: '#000000'
   },
   subHeader: { 
-    fontSize: 11, 
-    color: '#666', 
-    marginBottom: 15 
+    fontSize: 10, 
+    color: '#000000', 
+    marginBottom: 15,
+    textAlign: 'center' 
   },
   summary: {
     fontSize: 10,
-    lineHeight: 1.6,
+    lineHeight: 1.5,
     marginBottom: 20,
-    color: '#333'
+    color: '#000000',
+    textAlign: 'justify'
   },
   sectionTitle: { 
     fontSize: 12, 
     fontWeight: 'bold', 
-    borderBottom: '2pt solid #000',
-    paddingBottom: 4,
-    marginBottom: 10,
-    marginTop: 15,
+    borderBottom: '1pt solid #000',
+    paddingBottom: 2,
+    marginBottom: 8,
+    marginTop: 10,
     textTransform: 'uppercase',
-    letterSpacing: 0.5
+    color: '#000000'
   },
   row: { 
     flexDirection: 'row', 
@@ -45,29 +47,46 @@ const styles = StyleSheet.create({
     marginBottom: 4 
   },
   experienceItem: {
-    marginBottom: 12
+    marginBottom: 10
   },
-  companyRole: {
+  company: {
     fontSize: 11,
     fontWeight: 'bold',
+    color: '#000000'
+  },
+  roleLocation: {
+    fontSize: 10,
+    fontStyle: 'italic',
+    color: '#000000',
     marginBottom: 2
   },
-  dateLocation: {
-    fontSize: 9,
-    color: '#666',
-    marginBottom: 4
+  date: {
+    fontSize: 10,
+    color: '#000000'
   },
   description: {
     fontSize: 10,
-    lineHeight: 1.5,
-    color: '#333'
+    lineHeight: 1.4,
+    color: '#000000',
+    textAlign: 'justify'
   },
   educationItem: {
     marginBottom: 8
   },
+  institution: {
+    fontSize: 11,
+    fontWeight: 'bold',
+    color: '#000000'
+  },
+  degree: {
+    fontSize: 10,
+    fontStyle: 'italic',
+    color: '#000000'
+  },
   skills: {
     fontSize: 10,
-    lineHeight: 1.6
+    lineHeight: 1.4,
+    color: '#000000'
   }
 });
 
@@ -87,9 +106,8 @@ export const ClassicPDF = ({ data }: { data: CV }) => {
             {[
               data.personalInfo.email,
               data.personalInfo.phone,
-              data.personalInfo.location,
+              data.personalInfo.linkedin && `in/${data.personalInfo.linkedin.split('/').pop()}`,
               data.personalInfo.website,
-              data.personalInfo.linkedin
             ].filter(Boolean).join(' • ')}
           </Text>
           {data.personalInfo.summary && (
@@ -107,11 +125,12 @@ export const ClassicPDF = ({ data }: { data: CV }) => {
                   .sort((a, b) => a.order - b.order)
                   .map((job) => (
                     <View key={job.id} style={styles.experienceItem}>
-                      <Text style={styles.companyRole}>
-                        {job.company} — {job.role}
-                      </Text>
-                      <Text style={styles.dateLocation}>
-                        {job.dateRange} • {job.location}
+                      <View style={styles.row}>
+                        <Text style={styles.company}>{job.company}</Text>
+                        <Text style={styles.date}>{job.dateRange}</Text>
+                      </View>
+                       <Text style={styles.roleLocation}>
+                        {job.role} • {job.location}
                       </Text>
                       <Text style={styles.description}>{job.description}</Text>
                     </View>
@@ -129,10 +148,10 @@ export const ClassicPDF = ({ data }: { data: CV }) => {
                   .map((edu) => (
                     <View key={edu.id} style={styles.educationItem}>
                       <View style={styles.row}>
-                        <Text style={styles.companyRole}>{edu.institution}</Text>
-                        <Text style={styles.dateLocation}>{edu.dateRange}</Text>
+                        <Text style={styles.institution}>{edu.institution}</Text>
+                        <Text style={styles.date}>{edu.dateRange}</Text>
                       </View>
-                      <Text style={styles.description}>{edu.degree}</Text>
+                      <Text style={styles.degree}>{edu.degree}</Text>
                     </View>
                   ))}
               </View>
@@ -143,7 +162,10 @@ export const ClassicPDF = ({ data }: { data: CV }) => {
             return (
               <View key="skills">
                 <Text style={styles.sectionTitle}>Skills</Text>
-                <Text style={styles.skills}>{data.skills.join(' • ')}</Text>
+                <Text style={styles.skills}>
+                  <Text style={{fontWeight: 'bold'}}>Skills: </Text>
+                  {data.skills.join(', ')}.
+                </Text>
               </View>
             );
           }

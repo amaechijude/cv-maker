@@ -12,6 +12,7 @@
 
 # pdf
 *.pdf
+# error.txt
 
 # testing
 /coverage

@@ -8,6 +8,7 @@ import { TemplateRegistry } from '@/components/templates/registry';
 import { Button } from '@/components/ui/button';
 import { Download, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
+import saveAs from 'file-saver';
 
 export const DownloadButton = ({ 
   data, 
@@ -56,7 +57,7 @@ export const DownloadButton = ({
       const filename = `${safeName}_CV.pdf`;
       
       console.log('Saving file as:', filename);
-      // saveAs(blob, filename);
+      saveAs(blob, filename);
       
       toast.success('PDF Downloaded', {
         description: `${filename} has been saved to your device.`,

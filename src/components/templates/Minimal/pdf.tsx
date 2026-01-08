@@ -1,17 +1,11 @@
 // components/templates/Minimal/pdf.tsx
-import { Page, Text, View, Document, StyleSheet, Font } from '@react-pdf/renderer';
+import { Page, Text, View, Document, StyleSheet} from '@react-pdf/renderer';
 import { CV } from '@/types/cv';
 
-Font.register({
-  family: 'Inter',
-  fonts: [
-    { src: 'https://fonts.gstatic.com/s/inter/v12/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiA.woff2' },
-    { src: 'https://fonts.gstatic.com/s/inter/v12/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuGKYAZ9hiA.woff2', fontWeight: 'bold' }
-  ]
-});
+
 
 const styles = StyleSheet.create({
-  page: { padding: 40, fontFamily: 'Inter', fontSize: 10, lineHeight: 1.5 },
+  page: { padding: 40, fontFamily: 'Helvetica', fontSize: 10, lineHeight: 1.5 },
   header: { fontSize: 20, marginBottom: 5, fontWeight: 'bold' },
   subHeader: { fontSize: 9, color: '#666', marginBottom: 15 },
   summary: { fontSize: 10, lineHeight: 1.6, marginBottom: 20, color: '#333' },

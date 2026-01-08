@@ -1,0 +1,49 @@
+DownloadButton.tsx:65  PDF Generation failed detailed error: RangeError: Offset is outside the bounds of the DataView
+    at DataView.prototype.setUint16 (<anonymous>)
+    at $4abbb6a5dbdc441a$export$2e2bcd8739ae039._addGlyph (TTFSubset.js:32:14)
+    at $4abbb6a5dbdc441a$export$2e2bcd8739ae039.encode (TTFSubset.js:75:12)
+    at EmbeddedFont.embed (pdfkit.browser.js:44203:30)
+    at EmbeddedFont.finalize (pdfkit.browser.js:44342:10)
+    at PDFDocument.end (pdfkit.browser.js:47367:12)
+    at render (index.js:2073:9)
+    at render (index.js:82:33)
+    at async Object.toBlob (index.js:95:7)
+    at async handleDownload (DownloadButton.tsx:50:20)
+error @ intercept-console-error.ts:42
+handleDownload @ DownloadButton.tsx:65
+await in handleDownload
+executeDispatch @ react-dom-client.development.js:20543
+runWithFiberInDEV @ react-dom-client.development.js:986
+processDispatchQueue @ react-dom-client.development.js:20593
+(anonymous) @ react-dom-client.development.js:21164
+batchedUpdates$1 @ react-dom-client.development.js:3377
+dispatchEventForPluginEventSystem @ react-dom-client.development.js:20747
+dispatchEvent @ react-dom-client.development.js:25693
+dispatchDiscreteEvent @ react-dom-client.development.js:25661
+[NEW] Explain Console errors by using Copilot in Edge: click
+         
+         to explain an error. 
+        Learn more
+        Don't show again
+DownloadButton.tsx:65  PDF Generation failed detailed error: RangeError: Offset is outside the bounds of the DataView
+    at DataView.prototype.setUint16 (<anonymous>)
+    at $4abbb6a5dbdc441a$export$2e2bcd8739ae039._addGlyph (TTFSubset.js:32:14)
+    at $4abbb6a5dbdc441a$export$2e2bcd8739ae039.encode (TTFSubset.js:75:12)
+    at EmbeddedFont.embed (pdfkit.browser.js:44203:30)
+    at EmbeddedFont.finalize (pdfkit.browser.js:44342:10)
+    at PDFDocument.end (pdfkit.browser.js:47367:12)
+    at render (index.js:2073:9)
+    at render (index.js:82:33)
+    at async Object.toBlob (index.js:95:7)
+    at async handleDownload (DownloadButton.tsx:50:20)
+error @ intercept-console-error.ts:42
+handleDownload @ DownloadButton.tsx:65
+await in handleDownload
+executeDispatch @ react-dom-client.development.js:20543
+runWithFiberInDEV @ react-dom-client.development.js:986
+processDispatchQueue @ react-dom-client.development.js:20593
+(anonymous) @ react-dom-client.development.js:21164
+batchedUpdates$1 @ react-dom-client.development.js:3377
+dispatchEventForPluginEventSystem @ react-dom-client.development.js:20747
+dispatchEvent @ react-dom-client.development.js:25693
+dispatchDiscreteEvent @ react-dom-client.development.js:25661

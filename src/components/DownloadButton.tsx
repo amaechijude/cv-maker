@@ -51,10 +51,7 @@ export const DownloadButton = ({
       const blob = await pdf(<PDFComponent data={data} />).toBlob();
       console.log('Blob generated, size:', blob.size);
       
-      const safeName = data.personalInfo.fullName 
-          ? data.personalInfo.fullName.replace(/\s+/g, '_') 
-          : 'CV';
-      const filename = `${safeName}_CV.pdf`;
+      const filename = `${data.personalInfo.fullName} ${data.title}.pdf`;
       
       console.log('Saving file as:', filename);
       saveAs(blob, filename);

@@ -51,7 +51,7 @@ export const useCVStore = create<CVState>()(
         const newCV: CV = {
           id: uuidv4(),
           title,
-          templateId: 'classic',
+          templateId: 'minimal',
           lastModified: Date.now(),
           version: CURRENT_SCHEMA_VERSION,
           personalInfo: {

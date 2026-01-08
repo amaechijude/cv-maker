@@ -11,7 +11,7 @@ import {
   SortableContext,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
-import { Link, ArrowLeft, Undo, Redo } from "lucide-react";
+import { ArrowLeft, Undo, Redo } from "lucide-react";
 import { AutoSaveIndicator } from "./AutoSaveIndicator";
 import { DownloadButton } from "./DownloadButton";
 import { MobileEditorTabs } from "./MobileEditorTabs";
@@ -21,6 +21,7 @@ import { TemplateSelector } from "./TemplateSelector";
 import { TextareaWithCounter } from "./TextareaWithCounter";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
+import { useRouter } from "next/navigation";
 
 interface CvProps {
   cv: CV;
@@ -28,6 +29,7 @@ interface CvProps {
 
 export function EditorComponent({ cv }: CvProps) {
   const { updateCV, undo, redo, canUndo, canRedo } = useCVStore();
+  const router = useRouter();
 
   // Default values for hooks when cv is undefined
   const experience = cv.experience.length === 0 ? [] : cv.experience;
@@ -514,17 +516,21 @@ export function EditorComponent({ cv }: CvProps) {
   );
 
   return (
+    <>
     <div className="min-h-screen bg-white">
       {/* Header */}
       <header className="border-b bg-white sticky top-0 z-10">
         <div className="px-4 py-3 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <Link href="/">
-              <Button variant="ghost" size="sm">
+          <div className="flex items-center gap-4 ">
+              <Button
+                variant="ghost" 
+                size="sm"
+                onClick={() => router.back()}
+                className="sticky top-0 z-10"
+                >
                 <ArrowLeft className="w-4 h-4 mr-2" />
                 Back
               </Button>
-            </Link>
             <Input
               value={cv.title}
               onChange={(e) => handleUpdate({ title: e.target.value })}
@@ -565,5 +571,6 @@ export function EditorComponent({ cv }: CvProps) {
         <MobileEditorTabs editPanel={editPanel} previewPanel={previewPanel} />
       </div>
     </div>
+    </>
   );
 }

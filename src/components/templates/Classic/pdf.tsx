@@ -13,14 +13,15 @@ const styles = StyleSheet.create({
   },
   header: { 
     fontSize: 24, 
-    marginBottom: 8, 
+    marginBottom: 12, 
     fontWeight: 'bold',
     textAlign: 'center',
     color: '#000000'
   },
   subHeader: { 
     fontSize: 10, 
-    color: '#000000', 
+    color: '#000000',
+    marginTop: 12,
     marginBottom: 15,
     textAlign: 'center' 
   },
@@ -102,6 +103,7 @@ export const ClassicPDF = ({ data }: { data: CV }) => {
         {/* Header */}
         <View>
           <Text style={styles.header}>{data.personalInfo.fullName}</Text>
+          <View style={{ height: 10 }} />
           <Text style={styles.subHeader}>
             {[
               data.personalInfo.email,

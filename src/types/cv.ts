@@ -63,25 +63,57 @@ export interface Certification {
 }
 
 // Schema migration helper
-export const CURRENT_SCHEMA_VERSION = 1;
+export const CURRENT_SCHEMA_VERSION = 3;
 
 // Input type for migration - allows legacy CV structures with partial fields
 type LegacyCV = Partial<CV> & { id: string };
 
 export const migrateCV = (cv: LegacyCV): CV => {
-  if (cv.version === CURRENT_SCHEMA_VERSION) return cv as CV;
-
-  // Migration logic for older versions
-  if (!cv.version || cv.version < 1) {
-    return {
-      ...cv,
+  // If version is missing or old (0 or undefined), migrate to 1 first
+  let migrated = { ...cv } as CV;
+  
+  if (!migrated.version || migrated.version < 1) {
+    migrated = {
+      ...migrated,
       version: 1,
-      sectionOrder: cv.sectionOrder || ["experience", "education", "skills", "projects", "certifications"],
-      hiddenSections: cv.hiddenSections || [],
-      projects: cv.projects || [],
-      certifications: cv.certifications || [],
-    } as CV;
+      sectionOrder: migrated.sectionOrder || ["experience", "education", "skills"],
+      hiddenSections: migrated.hiddenSections || [],
+      projects: migrated.projects || [],
+      certifications: migrated.certifications || [],
+    };
   }
 
-  return cv as CV;
+  // Migrate to version 2: Add projects and certifications to sectionOrder if missing
+  if (migrated.version < 2) {
+    const currentOrder = new Set(migrated.sectionOrder);
+    const newOrder = [...migrated.sectionOrder];
+    
+    if (!currentOrder.has('projects')) newOrder.push('projects');
+    if (!currentOrder.has('certifications')) newOrder.push('certifications');
+
+    migrated = {
+      ...migrated,
+      version: 2,
+      sectionOrder: newOrder,
+      projects: migrated.projects || [],
+      certifications: migrated.certifications || [],
+    };
+  }
+
+  // Migrate to version 3: Strict check for projects and certifications in sectionOrder
+  if (migrated.version < 3) {
+    const currentOrder = new Set(migrated.sectionOrder);
+    const newOrder = [...migrated.sectionOrder];
+    
+    if (!currentOrder.has('projects')) newOrder.push('projects');
+    if (!currentOrder.has('certifications')) newOrder.push('certifications');
+
+    migrated = {
+      ...migrated,
+      version: 3,
+      sectionOrder: newOrder,
+    };
+  }
+
+  return migrated;
 };

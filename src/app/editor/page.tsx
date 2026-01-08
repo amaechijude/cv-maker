@@ -2,11 +2,8 @@
 
 import { Suspense } from "react";
 import { useCVStore } from "@/store/useCVStore";
-import { useSearchParams, useRouter, redirect } from "next/navigation";
+import { useSearchParams, redirect } from "next/navigation";
 import { EditorComponent } from "@/components/Editor";
-import { Button } from "@/components/ui/button";
-import { ArrowLeft } from "lucide-react";
-
 
 export default function GetCv() {
   return (
@@ -19,7 +16,6 @@ export default function GetCv() {
 function EditorContent() {
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
-  const router = useRouter();
   
   const { cvs } = useCVStore();
   if (!id) {
@@ -35,11 +31,6 @@ function EditorContent() {
   }
 
   return <>
-  <Button
-  className="cursor-pointer"
-  onClick={() => router.push("/")}
-  ><ArrowLeft />
-  </Button>
   <EditorComponent cv={cv} />
   </>;
 }

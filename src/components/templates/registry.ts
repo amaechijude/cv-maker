@@ -5,12 +5,6 @@ import { ClassicThumbnail } from './Classic/thumbnail';
 import { ModernTemplate } from './Modern';
 import { ModernPDF } from './Modern/pdf';
 import { ModernThumbnail } from './Modern/thumbnail';
-import { MinimalTemplate } from './Minimal';
-import { MinimalPDF } from './Minimal/pdf';
-import { MinimalThumbnail } from './Minimal/thumbnail';
-import { ProfessionalTemplate } from './Professional';
-import { ProfessionalPDF } from './Professional/pdf';
-import { ProfessionalThumbnail } from './Professional/thumbnail';
 import { CreativeTemplate } from './Creative';
 import { CreativePDF } from './Creative/pdf';
 import { CreativeThumbnail } from './Creative/thumbnail';
@@ -38,20 +32,6 @@ export const TemplateRegistry: Record<CV['templateId'], TemplateConfig> = {
     preview: ModernTemplate,
     pdf: ModernPDF,
     thumbnail: ModernThumbnail
-  },
-  minimal: {
-    name: 'Minimal',
-    description: 'Clean and simple layout',
-    preview: MinimalTemplate,
-    pdf: MinimalPDF,
-    thumbnail: MinimalThumbnail
-  },
-  professional: {
-    name: 'Professional',
-    description: 'Corporate-ready two-column layout',
-    preview: ProfessionalTemplate,
-    pdf: ProfessionalPDF,
-    thumbnail: ProfessionalThumbnail
   },
   creative: {
     name: 'Creative',

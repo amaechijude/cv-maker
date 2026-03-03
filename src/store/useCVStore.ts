@@ -93,6 +93,7 @@ export const useCVStore = create<CVState>()(
             name: 'AWS Certified Solutions Architect',
             issuer: 'Amazon Web Services',
             date: '2022',
+            link: '',
             order: 0
           }],
           atsKeywords: [],

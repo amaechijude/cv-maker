@@ -1,7 +1,7 @@
 export interface CV {
   id: string;
   title: string;
-  templateId: "classic" | "modern" | "minimal" | "professional" | "creative";
+  templateId: "classic" | "modern" | "creative";
   lastModified: number; // Unix timestamp
   version: number; // Schema version for migrations
 

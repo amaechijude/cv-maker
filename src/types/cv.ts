@@ -1,7 +1,7 @@
 export interface CV {
   id: string;
   title: string;
-  templateId: "classic" | "modern" | "minimal";
+  templateId: "classic" | "modern" | "minimal" | "professional" | "creative";
   lastModified: number; // Unix timestamp
   version: number; // Schema version for migrations
 
@@ -20,9 +20,10 @@ export interface CV {
   skills: string[];
   projects: Project[];
   certifications: Certification[];
+  atsKeywords?: string[];
 
   // Section visibility and ordering
-  sectionOrder: ("experience" | "education" | "skills" | "projects" | "certifications")[];
+  sectionOrder: ("experience" | "education" | "skills" | "projects" | "certifications" | "atsKeywords")[];
   hiddenSections: string[];
 }
 
@@ -30,7 +31,9 @@ export interface WorkExperience {
   id: string;
   company: string;
   role: string;
-  dateRange: string;
+  dateRange: string; // Keeping for compatibility and custom text
+  startDate?: string; // ISO format
+  endDate?: string;   // ISO format, undefined means "Present"
   location: string;
   description: string;
   order: number; // for manual reordering
@@ -40,7 +43,9 @@ export interface Education {
   id: string;
   institution: string;
   degree: string;
-  dateRange: string;
+  dateRange: string; // Keeping for compatibility and custom text
+  startDate?: string;
+  endDate?: string;
   order: number;
 }
 
@@ -50,20 +55,22 @@ export interface Project {
   description: string;
   link?: string;
   dateRange: string;
+  startDate?: string;
+  endDate?: string;
   order: number;
 }
 
 export interface Certification {
+  link: string;
   id: string;
   name: string;
   issuer: string;
-  date: string;
-  link?: string;
+  date: string; // ISO or string
   order: number;
 }
 
 // Schema migration helper
-export const CURRENT_SCHEMA_VERSION = 3;
+export const CURRENT_SCHEMA_VERSION = 5;
 
 // Input type for migration - allows legacy CV structures with partial fields
 type LegacyCV = Partial<CV> & { id: string };
@@ -113,6 +120,27 @@ export const migrateCV = (cv: LegacyCV): CV => {
       version: 3,
       sectionOrder: newOrder,
     };
+  }
+
+  // Migrate to version 4: Add atsKeywords
+  if (migrated.version < 4) {
+    migrated = {
+      ...migrated,
+      version: 4,
+      atsKeywords: migrated.atsKeywords || [],
+      sectionOrder: [...migrated.sectionOrder],
+    };
+  }
+
+  // Migrate to version 5: Ensure dates are handled (initial empty states)
+  if (migrated.version < 5) {
+      migrated = {
+          ...migrated,
+          version: 5,
+          experience: (migrated.experience || []).map(exp => ({ ...exp, dateRange: exp.dateRange || '' })),
+          education: (migrated.education || []).map(edu => ({ ...edu, dateRange: edu.dateRange || '' })),
+          projects: (migrated.projects || []).map(proj => ({ ...proj, dateRange: proj.dateRange || '' })),
+      }
   }
 
   return migrated;

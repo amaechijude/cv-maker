@@ -20,7 +20,8 @@ export const SectionManager = ({
     education: 'Education',
     skills: 'Skills',
     projects: 'Projects',
-    certifications: 'Certifications'
+    certifications: 'Certifications',
+    atsKeywords: 'ATS Keywords (Hidden in PDF)'
   };
 
   const handleDragEnd = (event: DragEndEvent) => {

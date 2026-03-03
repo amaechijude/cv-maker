@@ -48,21 +48,23 @@ export const DeleteConfirmModal = ({
             <AlertTriangle className="w-5 h-5 text-red-600" />
             <AlertDialogTitle>Delete CV?</AlertDialogTitle>
           </div>
-          <AlertDialogDescription className="space-y-3 pt-2">
-            <div className="bg-gray-50 p-3 rounded-md space-y-1">
-              <div className="font-semibold text-gray-900">&quot;{cv.title}&quot;</div>
-              <div className="text-sm text-gray-600">
-                Last modified: {timeAgo(cv.lastModified)}
+          <AlertDialogDescription className="space-y-3 pt-2" asChild>
+            <div>
+              <div className="bg-gray-50 p-3 rounded-md space-y-1">
+                <div className="font-semibold text-gray-900">&quot;{cv.title}&quot;</div>
+                <div className="text-sm text-gray-600">
+                  Last modified: {timeAgo(cv.lastModified)}
+                </div>
+                <div className="text-sm text-gray-600">
+                  Contains: {cv.experience.length} job
+                  {cv.experience.length !== 1 ? "s" : ""}, {cv.education.length}{" "}
+                  school{cv.education.length !== 1 ? "s" : ""}
+                </div>
               </div>
-              <div className="text-sm text-gray-600">
-                Contains: {cv.experience.length} job
-                {cv.experience.length !== 1 ? "s" : ""}, {cv.education.length}{" "}
-                school{cv.education.length !== 1 ? "s" : ""}
-              </div>
+              <p className="text-red-600 font-medium">
+                This action cannot be undone.
+              </p>
             </div>
-            <p className="text-red-600 font-medium">
-              This action cannot be undone.
-            </p>
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>

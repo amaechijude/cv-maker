@@ -51,7 +51,7 @@ export const useCVStore = create<CVState>()(
         const newCV: CV = {
           id: uuidv4(),
           title,
-          templateId: 'minimal',
+          templateId: 'classic',
           lastModified: Date.now(),
           version: CURRENT_SCHEMA_VERSION,
           personalInfo: {
@@ -95,8 +95,9 @@ export const useCVStore = create<CVState>()(
             date: '2022',
             order: 0
           }],
-          sectionOrder: ['experience', 'education', 'skills', 'projects', 'certifications'],
-          hiddenSections: []
+          atsKeywords: [],
+          sectionOrder: ['experience', 'education', 'skills', 'projects', 'certifications', 'atsKeywords'],
+          hiddenSections: ['atsKeywords'] // Hide ATS keywords by default as they are usually for "embedding"
         };
         return { 
           cvs: [newCV, ...state.cvs], 

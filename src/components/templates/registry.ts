@@ -8,6 +8,12 @@ import { ModernThumbnail } from './Modern/thumbnail';
 import { MinimalTemplate } from './Minimal';
 import { MinimalPDF } from './Minimal/pdf';
 import { MinimalThumbnail } from './Minimal/thumbnail';
+import { ProfessionalTemplate } from './Professional';
+import { ProfessionalPDF } from './Professional/pdf';
+import { ProfessionalThumbnail } from './Professional/thumbnail';
+import { CreativeTemplate } from './Creative';
+import { CreativePDF } from './Creative/pdf';
+import { CreativeThumbnail } from './Creative/thumbnail';
 import { CV } from '@/types/cv';
 
 export interface TemplateConfig {
@@ -39,5 +45,19 @@ export const TemplateRegistry: Record<CV['templateId'], TemplateConfig> = {
     preview: MinimalTemplate,
     pdf: MinimalPDF,
     thumbnail: MinimalThumbnail
+  },
+  professional: {
+    name: 'Professional',
+    description: 'Corporate-ready two-column layout',
+    preview: ProfessionalTemplate,
+    pdf: ProfessionalPDF,
+    thumbnail: ProfessionalThumbnail
+  },
+  creative: {
+    name: 'Creative',
+    description: 'Bold and unique design',
+    preview: CreativeTemplate,
+    pdf: CreativePDF,
+    thumbnail: CreativeThumbnail
   }
 };

@@ -15,6 +15,7 @@ import { ArrowLeft, Undo, Redo } from "lucide-react";
 import { AutoSaveIndicator } from "./AutoSaveIndicator";
 import { DownloadButton } from "./DownloadButton";
 import { MobileEditorTabs } from "./MobileEditorTabs";
+import { ATSKeywordsInput } from "./ATSKeywordsInput";
 import { SectionManager } from "./SectionManager";
 import { SkillsInput } from "./SkillsInput";
 import { TemplateSelector } from "./TemplateSelector";
@@ -22,6 +23,9 @@ import { TextareaWithCounter } from "./TextareaWithCounter";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { useRouter } from "next/navigation";
+import { CVDateRangePicker } from "./CVDateRangePicker";
+import { DatePicker } from "./ui/date-picker";
+import { format } from "date-fns";
 
 interface CvProps {
   cv: CV;
@@ -207,14 +211,10 @@ export function EditorComponent({ cv }: CvProps) {
                       experienceManager.update(exp.id, { role: e.target.value })
                     }
                   />
-                  <Input
-                    placeholder="Date Range (e.g., 2020 - Present)"
-                    value={exp.dateRange}
-                    onChange={(e) =>
-                      experienceManager.update(exp.id, {
-                        dateRange: e.target.value,
-                      })
-                    }
+                  <CVDateRangePicker
+                    startDate={exp.startDate}
+                    endDate={exp.endDate}
+                    onChange={(updates) => experienceManager.update(exp.id, updates)}
                   />
                   <Input
                     placeholder="Location"
@@ -296,14 +296,10 @@ export function EditorComponent({ cv }: CvProps) {
                       })
                     }
                   />
-                  <Input
-                    placeholder="Date Range (e.g., 2016 - 2020)"
-                    value={edu.dateRange}
-                    onChange={(e) =>
-                      educationManager.update(edu.id, {
-                        dateRange: e.target.value,
-                      })
-                    }
+                  <CVDateRangePicker
+                    startDate={edu.startDate}
+                    endDate={edu.endDate}
+                    onChange={(updates) => educationManager.update(edu.id, updates)}
                   />
                   <Button
                     size="sm"
@@ -358,14 +354,10 @@ export function EditorComponent({ cv }: CvProps) {
                       })
                     }
                   />
-                  <Input
-                    placeholder="Date Range"
-                    value={project.dateRange}
-                    onChange={(e) =>
-                      projectsManager.update(project.id, {
-                        dateRange: e.target.value,
-                      })
-                    }
+                  <CVDateRangePicker
+                    startDate={project.startDate}
+                    endDate={project.endDate}
+                    onChange={(updates) => projectsManager.update(project.id, updates)}
                   />
                   <Input
                     placeholder="Link (optional)"
@@ -448,15 +440,17 @@ export function EditorComponent({ cv }: CvProps) {
                       })
                     }
                   />
-                  <Input
-                    placeholder="Date"
-                    value={cert.date}
-                    onChange={(e) =>
-                      certificationsManager.update(cert.id, {
-                        date: e.target.value,
-                      })
-                    }
-                  />
+                  <div className="border rounded-md">
+                    <DatePicker
+                      placeholder="Date"
+                      date={cert.date && !isNaN(new Date(cert.date).getTime()) ? new Date(cert.date) : undefined}
+                      setDate={(date) => {
+                        certificationsManager.update(cert.id, {
+                          date: date ? format(date, "MMM yyyy") : ""
+                        });
+                      }}
+                    />
+                  </div>
                   <Input
                     placeholder="Link (optional)"
                     value={cert.link}
@@ -484,6 +478,12 @@ export function EditorComponent({ cv }: CvProps) {
       <SkillsInput
         skills={cv.skills}
         onChange={(newSkills) => handleUpdate({ skills: newSkills })}
+      />
+
+      {/* ATS Keywords */}
+      <ATSKeywordsInput
+        keywords={cv.atsKeywords || []}
+        onChange={(newKeywords) => handleUpdate({ atsKeywords: newKeywords })}
       />
 
       {/* Template Selector */}

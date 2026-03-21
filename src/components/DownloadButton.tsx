@@ -74,17 +74,18 @@ export const DownloadButton = ({
       onClick={handleDownload} 
       disabled={disabled || isGenerating}
       className="gap-2 cursor-pointer"
+      variant="manuscript"
       size="default"
     >
       {isGenerating ? (
         <>
           <Loader2 className="w-4 h-4 animate-spin" />
-          Generating...
+          Publishing...
         </>
       ) : (
         <>
           <Download className="w-4 h-4" />
-          Download PDF
+          Export PDF
         </>
       )}
     </Button>

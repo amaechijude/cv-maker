@@ -3,7 +3,7 @@
 import { useState, KeyboardEvent } from 'react';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
-import { X, Plus } from 'lucide-react';
+import { X, Plus, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 export const SkillsInput = ({
@@ -42,42 +42,51 @@ export const SkillsInput = ({
   };
 
   return (
-    <div className="space-y-2">
-      <label className="text-sm font-medium">
-        Skills ({skills.length}/{maxSkills})
-      </label>
+    <section className="space-y-6">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <div className="w-1.5 h-6 bg-primary rounded-full" />
+          <h2 className="text-2xl font-serif text-primary">Core Competencies</h2>
+        </div>
+        <span className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant/40">
+          {skills.length} / {maxSkills}
+        </span>
+      </div>
       
-      {/* Input */}
-      <div className="flex gap-2">
+      {/* Input Architecture */}
+      <div className="flex gap-3 bg-surface-container-low p-2 rounded-xl group focus-within:bg-white transition-all shadow-sm">
         <Input
           type="text"
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
           onKeyDown={handleKeyDown}
-          placeholder="Type a skill and press Enter"
+          placeholder="Acquired mastery in..."
           disabled={skills.length >= maxSkills}
+          className="bg-transparent border-none shadow-none focus:ring-0 italic"
         />
         <Button
           type="button"
           onClick={addSkill}
           disabled={!inputValue.trim() || skills.length >= maxSkills}
-          size="icon"
-          variant="outline"
+          size="icon-sm"
+          variant="manuscript"
+          className="rounded-lg shrink-0"
         >
           <Plus className="w-4 h-4" />
         </Button>
       </div>
 
-      {/* Skills Display */}
+      {/* Skills Display Gallery */}
       {skills.length > 0 && (
-        <div className="flex flex-wrap gap-2 p-3 bg-gray-50 rounded-lg min-h-15">
+        <div className="flex flex-wrap gap-2 min-h-12">
           {skills.map((skill) => (
-            <Badge key={skill} variant="secondary" className="gap-1 pr-1">
-              {skill}
+            <Badge key={skill} variant="default" className="gap-2 px-3 py-1.5 hover:shadow-md transition-all">
+              <Sparkles className="w-3 h-3 opacity-40" />
+              <span className="font-bold tracking-tight">{skill}</span>
               <button
                 type="button"
                 onClick={() => removeSkill(skill)}
-                className="ml-1 hover:bg-gray-300 rounded-full p-0.5"
+                className="ml-1 hover:bg-primary/10 rounded-full p-0.5 transition-colors"
                 aria-label={`Remove ${skill}`}
               >
                 <X className="w-3 h-3" />
@@ -88,10 +97,10 @@ export const SkillsInput = ({
       )}
 
       {skills.length >= maxSkills && (
-        <p className="text-sm text-orange-600">
-          Maximum {maxSkills} skills reached
+        <p className="text-[10px] uppercase tracking-widest font-bold text-tertiary-container animate-pulse">
+          Maximum archival capacity reached
         </p>
       )}
-    </div>
+    </section>
   );
 };

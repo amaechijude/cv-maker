@@ -1,4 +1,13 @@
 import { Textarea } from '@/components/ui/textarea';
+import { cn } from '@/lib/utils';
+
+export interface TextareaWithCounterProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  maxLength?: number;
+  label?: string;
+  error?: string;
+}
 
 export const TextareaWithCounter = ({ 
   value, 
@@ -7,15 +16,9 @@ export const TextareaWithCounter = ({
   label,
   placeholder,
   error,
+  className,
   ...props 
-}: {
-  value: string;
-  onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
-  maxLength?: number;
-  label?: string;
-  placeholder?: string;
-  error?: string;
-}) => {
+}: TextareaWithCounterProps) => {
   const remaining = maxLength - value.length;
   const isNearLimit = remaining < 50;
   const isOverLimit = remaining < 0;
@@ -28,10 +31,11 @@ export const TextareaWithCounter = ({
         onChange={onChange}
         placeholder={placeholder}
         maxLength={maxLength}
-        className={`
-          ${isOverLimit ? 'border-red-500 focus:ring-red-500' : ''}
-          ${error ? 'border-red-500' : ''}
-        `}
+        className={cn(
+          isOverLimit ? 'border-red-500 focus:ring-red-500' : '',
+          error ? 'border-red-500' : '',
+          className
+        )}
         {...props} 
       />
       <div className="flex justify-between items-center">

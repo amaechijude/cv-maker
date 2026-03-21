@@ -1,5 +1,6 @@
 // components/templates/Modern/index.tsx
 import { CV } from '@/types/cv';
+import { cn } from '@/lib/utils';
 
 export const ModernTemplate = ({ data }: { data: CV }) => {
   const visibleSections = data.sectionOrder.filter(
@@ -7,132 +8,129 @@ export const ModernTemplate = ({ data }: { data: CV }) => {
   );
 
   return (
-    <div className="printable-preview p-10 font-sans bg-white">
-      {/* Header with accent */}
-      <div className="mb-6 bg-blue-50 p-4 rounded-lg">
-        <h1 className="text-3xl font-bold text-blue-900 mb-1">
-          {data.personalInfo.fullName}
+    <div className="printable-preview p-16 font-sans bg-white text-[#181c1e] min-h-[297mm]">
+      {/* Editorial Header */}
+      <header className="mb-12 border-b-2 border-[#002045] pb-8">
+        <h1 className="text-5xl font-serif font-medium text-[#002045] mb-4 tracking-tight">
+          {data.personalInfo.fullName || "Your Name"}
         </h1>
-        <p className="text-sm text-blue-700 mb-3">
-          {[
-            data.personalInfo.email,
-            data.personalInfo.phone,
-            data.personalInfo.location,
-            data.personalInfo.website,
-            data.personalInfo.linkedin
-          ].filter(Boolean).join(' • ')}
-        </p>
-        {data.personalInfo.summary && (
-          <p className="text-sm leading-relaxed text-gray-700">
+        <div className="flex flex-wrap gap-x-4 gap-y-1 text-[10px] uppercase tracking-[0.2em] font-bold text-[#43474e]">
+          {data.personalInfo.location && <span>{data.personalInfo.location}</span>}
+          {data.personalInfo.phone && <span>{data.personalInfo.phone}</span>}
+          {data.personalInfo.email && <span>{data.personalInfo.email}</span>}
+          {data.personalInfo.website && <span className="lowercase tracking-normal font-medium text-[#002045] underline decoration-1 underline-offset-2">{data.personalInfo.website}</span>}
+          {data.personalInfo.linkedin && <span className="lowercase tracking-normal font-medium text-[#002045] underline decoration-1 underline-offset-2">{data.personalInfo.linkedin}</span>}
+        </div>
+      </header>
+
+      {/* Profile / Summary */}
+      {data.personalInfo.summary && (
+        <section className="mb-12">
+          <h2 className="text-[10px] uppercase tracking-[0.3em] font-black text-[#002045]/30 mb-4">Professional Profile</h2>
+          <p className="text-sm leading-relaxed font-light text-[#181c1e]">
             {data.personalInfo.summary}
           </p>
-        )}
-      </div>
+        </section>
+      )}
 
       {visibleSections.map((section) => {
         if (section === 'experience' && data.experience.length > 0) {
           return (
-            <div key="experience" className="mb-6">
-              <h2 className="text-lg font-bold text-blue-900 border-l-4 border-blue-500 pl-3 mb-3">
-                Experience
-              </h2>
-              {data.experience.sort((a, b) => a.order - b.order).map((job) => (
-                <div key={job.id} className="mb-4 pl-3">
-                  <h3 className="text-sm font-bold text-blue-800">
-                    {job.company} — {job.role}
-                  </h3>
-                  <p className="text-xs text-gray-600 mb-2">
-                    {job.dateRange} • {job.location}
-                  </p>
-                  <p className="text-sm leading-relaxed">{job.description}</p>
-                </div>
-              ))}
-            </div>
+            <section key="experience" className="mb-12">
+              <h2 className="text-[10px] uppercase tracking-[0.3em] font-black text-[#002045]/30 mb-6">Professional Experience</h2>
+              <div className="space-y-8">
+                {data.experience.sort((a, b) => (a.order || 0) - (b.order || 0)).map((job) => (
+                  <div key={job.id} className="relative pl-0">
+                    <div className="flex justify-between items-baseline mb-1">
+                      <h3 className="text-lg font-serif font-bold text-[#002045]">
+                        {job.company}
+                      </h3>
+                      <span className="text-[10px] font-bold text-[#43474e] uppercase tracking-wider">
+                        {job.startDate} — {job.endDate || 'Present'}
+                      </span>
+                    </div>
+                    <p className="text-xs font-bold text-[#43474e] uppercase tracking-widest mb-3">
+                      {job.role} <span className="mx-2 opacity-20">|</span> {job.location}
+                    </p>
+                    <p className="text-sm leading-relaxed text-[#181c1e] whitespace-pre-wrap">{job.description}</p>
+                  </div>
+                ))}
+              </div>
+            </section>
           );
         }
 
         if (section === 'education' && data.education.length > 0) {
           return (
-            <div key="education" className="mb-6">
-              <h2 className="text-lg font-bold text-blue-900 border-l-4 border-blue-500 pl-3 mb-3">
-                Education
-              </h2>
-              {data.education.sort((a, b) => a.order - b.order).map((edu) => (
-                <div key={edu.id} className="mb-3 pl-3">
-                  <div className="flex justify-between items-baseline">
-                    <h3 className="text-sm font-bold text-blue-800">{edu.institution}</h3>
-                    <span className="text-xs text-gray-600">{edu.dateRange}</span>
+            <section key="education" className="mb-12">
+              <h2 className="text-[10px] uppercase tracking-[0.3em] font-black text-[#002045]/30 mb-6">Academic History</h2>
+              <div className="space-y-6">
+                {data.education.sort((a, b) => (a.order || 0) - (b.order || 0)).map((edu) => (
+                  <div key={edu.id}>
+                    <div className="flex justify-between items-baseline mb-1">
+                      <h3 className="text-base font-serif font-bold text-[#002045]">{edu.institution}</h3>
+                      <span className="text-[10px] font-bold text-[#43474e] uppercase tracking-wider">{edu.startDate} — {edu.endDate}</span>
+                    </div>
+                    <p className="text-xs font-medium text-[#43474e] italic">{edu.degree}</p>
                   </div>
-                  <p className="text-sm">{edu.degree}</p>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            </section>
           );
         }
 
         if (section === 'skills' && data.skills.length > 0) {
           return (
-            <div key="skills">
-              <h2 className="text-lg font-bold text-blue-900 border-l-4 border-blue-500 pl-3 mb-3">
-                Skills
-              </h2>
-              <p className="text-sm pl-3">{data.skills.join(' • ')}</p>
-            </div>
+            <section key="skills" className="mb-12">
+              <h2 className="text-[10px] uppercase tracking-[0.3em] font-black text-[#002045]/30 mb-4">Competencies</h2>
+              <div className="flex flex-wrap gap-2">
+                {data.skills.map((skill, i) => (
+                  <span key={i} className="text-[10px] font-bold uppercase tracking-wider bg-[#f1f4f6] text-[#002045] px-3 py-1 rounded-sm">
+                    {skill}
+                  </span>
+                ))}
+              </div>
+            </section>
           );
         }
 
         if (section === 'projects' && data.projects && data.projects.length > 0) {
           return (
-            <div key="projects" className="mb-6">
-              <h2 className="text-lg font-bold text-blue-900 border-l-4 border-blue-500 pl-3 mb-3">
-                Projects
-              </h2>
-              {data.projects.sort((a, b) => a.order - b.order).map((project) => (
-                <div key={project.id} className="mb-4 pl-3">
-                  <h3 className="text-sm font-bold text-blue-800">
-                    {project.name}
-                  </h3>
-                  <p className="text-xs text-gray-600 mb-2">
-                    {project.dateRange}
-                  </p>
-                   {project.link && (
-                       <a href={project.link} target="_blank" rel="noopener noreferrer" className="text-xs text-blue-600 block mb-2 hover:underline">
-                         {project.link}
+            <section key="projects" className="mb-12">
+              <h2 className="text-[10px] uppercase tracking-[0.3em] font-black text-[#002045]/30 mb-6">Selected Works</h2>
+              <div className="space-y-6">
+                {data.projects.sort((a, b) => (a.order || 0) - (b.order || 0)).map((project) => (
+                  <div key={project.id}>
+                    <div className="flex justify-between items-baseline mb-1">
+                      <h3 className="text-base font-serif font-bold text-[#002045]">
+                        {project.name}
+                      </h3>
+                      <span className="text-[10px] font-bold text-[#43474e] uppercase tracking-wider">
+                        {project.startDate} — {project.endDate}
+                      </span>
+                    </div>
+                    {project.link && (
+                       <a href={project.link} target="_blank" rel="noopener noreferrer" className="text-[10px] text-[#002045] underline decoration-1 underline-offset-2 mb-2 block font-bold">
+                         {project.link.replace(/^https?:\/\//, '')}
                        </a>
                     )}
-                  <p className="text-sm leading-relaxed">{project.description}</p>
-                </div>
-              ))}
-            </div>
-          );
-        }
-
-        if (section === 'certifications' && data.certifications && data.certifications.length > 0) {
-          return (
-            <div key="certifications" className="mb-6">
-              <h2 className="text-lg font-bold text-blue-900 border-l-4 border-blue-500 pl-3 mb-3">
-                Certifications
-              </h2>
-              {data.certifications.sort((a, b) => a.order - b.order).map((cert) => (
-                <div key={cert.id} className="mb-3 pl-3">
-                  <div className="flex justify-between items-baseline">
-                    <h3 className="text-sm font-bold text-blue-800">{cert.name}</h3>
-                    <span className="text-xs text-gray-600">{cert.date}</span>
+                    <p className="text-sm leading-relaxed text-[#181c1e]">{project.description}</p>
                   </div>
-                  <p className="text-sm">{cert.issuer}</p>
-                   {cert.link && (
-                       <a href={cert.link} target="_blank" rel="noopener noreferrer" className="text-xs text-blue-600 block hover:underline">
-                         {cert.link}
-                       </a>
-                    )}
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            </section>
           );
         }
 
         return null;
       })}
+
+      {/* Footer Branding */}
+      <footer className="mt-auto pt-16 border-t border-[#002045]/5 text-center">
+        <span className="text-[8px] uppercase tracking-[0.5em] font-black text-[#002045]/20">
+          Generated via Digital Curator Editorial Suite
+        </span>
+      </footer>
     </div>
   );
 };

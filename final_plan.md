@@ -402,7 +402,7 @@ export const TemplateRegistry: Record<CV['templateId'], TemplateConfig> = {
 // components/templates/Classic/thumbnail.tsx
 export const ClassicThumbnail = () => {
   return (
-    <div className="w-full aspect-[210/297] bg-white border border-gray-300 rounded overflow-hidden p-2 text-xs">
+    <div className="w-full aspect-210/297 bg-white border border-gray-300 rounded overflow-hidden p-2 text-xs">
       <div className="border-b-2 border-black pb-1 mb-1">
         <div className="h-2 bg-gray-800 w-3/4 mb-0.5"></div>
         <div className="h-1 bg-gray-400 w-full"></div>
@@ -779,51 +779,51 @@ export const CVCardSkeleton = () => (
 
 **Left Panel - Form Sections:**
 
-1. **Personal Information**
-   - Full Name (required, red border if empty)
-   - Email (required, validated with regex)
-   - Phone (required)
-   - Location
-   - Website (optional, URL validated)
-   - LinkedIn (optional, URL validated)
-   - Summary (textarea with 0/600 counter, orange when >550)
+1.  **Personal Information**
+    -   Full Name (required, red border if empty)
+    -   Email (required, validated with regex)
+    -   Phone (required)
+    -   Location
+    -   Website (optional, URL validated)
+    -   LinkedIn (optional, URL validated)
+    -   Summary (textarea with 0/600 counter, orange when >550)
 
-2. **Experience Section**
-   - [+ Add Experience] button
-   - **Draggable list items** (using @dnd-kit)
-   - Each item:
-     - Company (required)
-     - Role (required)
-     - Date Range
-     - Location
-     - Description (textarea)
-     - [🗑️ Delete] icon (with confirm)
-     - [⋮⋮] Drag handle
+2.  **Experience Section**
+    -   [+ Add Experience] button
+    -   **Draggable list items** (using @dnd-kit)
+    -   Each item:
+        -   Company (required)
+        -   Role (required)
+        -   Date Range
+        -   Location
+        -   Description (textarea)
+        -   [🗑️ Delete] icon (with confirm)
+        -   [⋮⋮] Drag handle
 
-3. **Education Section**
-   - [+ Add Education] button
-   - **Draggable list items**
-   - Each item:
-     - Institution
-     - Degree
-     - Date Range
-     - [🗑️ Delete] icon
-     - [⋮⋮] Drag handle
+3.  **Education Section**
+    -   [+ Add Education] button
+    -   **Draggable list items**
+    -   Each item:
+        -   Institution
+        -   Degree
+        -   Date Range
+        -   [🗑️ Delete] icon
+        -   [⋮⋮] Drag handle
 
-4. **Skills Section**
-   - Tag-style input (press Enter to add)
-   - Display as removable chips
-   - Max 20 skills warning
+4.  **Skills Section**
+    -   Tag-style input (press Enter to add)
+    -   Display as removable chips
+    -   Max 20 skills warning
 
-5. **Template Selector**
-   - **Grid with thumbnail previews** (3 columns)
-   - Shows current selection with checkmark
-   - Hover shows template name + description
+5.  **Template Selector**
+    -   **Grid with thumbnail previews** (3 columns)
+    -   Shows current selection with checkmark
+    -   Hover shows template name + description
 
-6. **Section Manager** (NEW)
-   - Toggle visibility of sections
-   - Drag to reorder sections
-   - "Show/Hide Skills", "Show/Hide Education", etc.
+6.  **Section Manager** (NEW)
+    -   Toggle visibility of sections
+    -   Drag to reorder sections
+    -   "Show/Hide Skills", "Show/Hide Education", etc.
 
 **Right Panel - Live Preview:**
 ```
@@ -1833,7 +1833,7 @@ export const SkillsInput = ({
 
       {/* Skills Display */}
       {skills.length > 0 && (
-        <div className="flex flex-wrap gap-2 p-3 bg-gray-50 rounded-lg min-h-[60px]">
+        <div className="flex flex-wrap gap-2 p-3 bg-gray-50 rounded-lg min-h-15">
           {skills.map((skill) => (
             <Badge key={skill} variant="secondary" className="gap-1 pr-1">
               {skill}
